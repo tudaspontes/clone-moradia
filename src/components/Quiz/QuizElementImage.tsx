@@ -1,35 +1,51 @@
 import { Box, Image, Text } from "@chakra-ui/react";
-import { useState } from "react";
-import useForm from "../../hook/useForm"
-import { forwardRef, ForwardRefRenderFunction } from "react";
+import { forwardRef, ForwardRefRenderFunction, useState } from "react";
 interface QuizElementImageProps {
   image: string;
   title: string;
+  setValueForm: any;
+  getValuesForm: any;
+  valueImg: any;
 }
 
-const ImageBase: ForwardRefRenderFunction<HTMLImageElement, QuizElementImageProps>
-  = ({image, title, ...rest}: QuizElementImageProps, ref) => {
+const ImageBase: ForwardRefRenderFunction<
+  HTMLImageElement,
+  QuizElementImageProps
+> = (
+  {
+    image,
+    title,
+    setValueForm,
+    getValuesForm,
+    valueImg,
+    ...rest
+  }: QuizElementImageProps,
+  ref
+) => {
+  const [color, setColor] = useState(true);
 
-    const { handleChange, handleSubmit, values } = useForm()
-
-    function handleImage(data) {
-      console.log(data)
-    }
-  
-    const [color, setColor] = useState(true)
-  
   return (
     <Box
-    as="form"
-    onSubmit={() => handleSubmit(handleImage)}>
+      as="button"
+      type="button"
+      onClick={() => {
+        setColor(!color);
+        const valores = getValuesForm("image");
+
+        var index = valores.indexOf(valueImg);
+        if (index === -1) {
+          setValueForm("image", [...valores, valueImg]);
+        } else {
+          const novoValores = valores.filter((v) => v !== valueImg);
+          setValueForm("image", novoValores);
+        }
+      }}
+    >
       <Image
         name="image"
-        value={values.image}
         border="4px"
-        borderColor={color ? 'white' : 'pink.500'}
+        borderColor={color ? "white" : "pink.500"}
         transition="0.5s"
-        onClick={() => setColor(!color)}
-        onChange={handleChange}
         width="100%"
         height="12rem"
         mt={10}
@@ -38,17 +54,13 @@ const ImageBase: ForwardRefRenderFunction<HTMLImageElement, QuizElementImageProp
         alt="Sala com livro Channel"
         {...rest}
         ref={ref}
-      >
-      </Image>
-      
-      <Text
-        align="center"
-        color="gray.650"
-      >
+      ></Image>
+
+      <Text align="center" color="gray.650">
         {title}
       </Text>
     </Box>
-  )
-}
+  );
+};
 
-export const QuizElementImage = forwardRef(ImageBase)
+export const QuizElementImage = forwardRef(ImageBase);
