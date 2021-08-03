@@ -1,23 +1,17 @@
-import { Input, Flex } from "@chakra-ui/react";
+import { Flex, Input } from "@chakra-ui/react";
 import { forwardRef, ForwardRefRenderFunction } from "react";
-
-import { useLocalStorage } from "../../hook/useLocalStorage";
 
 interface QuizElementInputProps {
   placeholder: string;
 }
 
-const InputBase: ForwardRefRenderFunction<HTMLInputElement, QuizElementInputProps>
-  = ({placeholder, ...rest}:QuizElementInputProps, ref) => {
-
-    const [text, setText] = useLocalStorage('text', '')
-
-    
+const InputBase: ForwardRefRenderFunction<
+  HTMLInputElement,
+  QuizElementInputProps
+> = ({ placeholder, ...rest }: QuizElementInputProps, ref) => {
   return (
     <Flex mb={10}>
       <Input
-        onChange={e => setText(e.target.value)}
-        value={text}
         name="project"
         variant="filled"
         borderRadius="0"
@@ -29,7 +23,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, QuizElementInputProp
         {...rest}
       />
     </Flex>
-  )
-}
+  );
+};
 
-export const QuizElementInput = forwardRef(InputBase)
+export const QuizElementInput = forwardRef(InputBase);
