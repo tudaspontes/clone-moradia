@@ -1,10 +1,10 @@
 import { Box, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { useForm } from "react-hook-form";
 import { useData } from "../../hook/useData";
 import { SEO } from "../../utils/seo";
 import { QuizElementColor } from "./QuizElementColor";
 import { QuizElementSelect } from "./QuizElementSelect";
+import { QuizElementSelectV2 } from "./QuizElementSelectV2";
 import { QuizElementTextArea } from "./QuizElementTextArea";
 import { QuizTitleHeader } from "./QuizTitleHeader";
 
@@ -15,10 +15,10 @@ interface QuizStep3Props {
 export function QuizStep3({ children }: QuizStep3Props) {
   const { setValues, data } = useData();
 
-  const { register, handleSubmit } = useForm({
-    defaultValues: { Quanto: data.Quanto },
-    mode: "onBlur",
-  });
+  // const { register, handleSubmit } = useForm({
+  //   defaultValues: { Quanto: data.Quanto },
+  //   mode: "onBlur",
+  // });
 
   function onSubmit(data) {
     setValues(data);
@@ -45,14 +45,13 @@ export function QuizStep3({ children }: QuizStep3Props) {
           {" "}
           Quanto você <strong>pretende</strong> investir?{" "}
         </Text>
-        <QuizElementSelect
-          optionValue1={1}
-          optionName1="Até R$ 3.000,00"
-          optionValue2={2}
-          optionName2="de R$ 3.000,00 a R$7.000,00"
-          optionValue3={3}
-          optionName3="Mais que R$ 7.000,00"
-          {...register("Quanto")}
+        <QuizElementSelectV2
+          optionValue={[
+            { value: "1", label: "Até R$ 3.000,00" },
+            { value: "2", label: "de R$ 3.000,00 a R$7.000,00" },
+            { value: "3", label: "Mais que R$ 7.000,00" },
+          ]}
+          name="quanto"
         />
         <Text mt={10} color="gray.650">
           Conte um pouco <strong>sobre você</strong>:
@@ -71,13 +70,13 @@ export function QuizStep3({ children }: QuizStep3Props) {
         <Text mt={10} mb={4} color="gray.650">
           <strong>Quem</strong> vai usar esse local?
         </Text>
-        <QuizElementSelect
-          optionValue1={1}
-          optionName1="Eu mesmo"
-          optionValue2={2}
-          optionName2="Filhos"
-          optionValue3={3}
-          optionName3="Visitas"
+        <QuizElementSelectV2
+          optionValue={[
+            { value: "1", label: "Eu mesmo" },
+            { value: "2", label: "Filhos" },
+            { value: "3", label: "Visitas" },
+          ]}
+          name="quemVaiUsarEsseLocal"
         />
         <Text mt={10} mb={4}>
           Para quê vai <strong>servir</strong> o ambiente?
