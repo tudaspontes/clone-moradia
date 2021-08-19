@@ -1,8 +1,12 @@
 import { Box, Button, Checkbox, Flex, Text } from "@chakra-ui/react";
+import { useData } from "../../hook/useData";
 import { SEO } from "../../utils/seo";
 import { QuizTitleHeader } from "./QuizTitleHeader";
 
-export function QuizAcceptTerms({ onSubmit }) {
+export function QuizAcceptTerms() {
+  const dataCtx = useData();
+  console.log("dataCtx:", dataCtx);
+
   return (
     <>
       <SEO title="Aceitar termos" />
@@ -43,7 +47,16 @@ export function QuizAcceptTerms({ onSubmit }) {
           </Checkbox>
           <Button
             type="submit"
-            onClick={onSubmit}
+            onClick={async () => {
+              const res = await fetch("http://localhost:3000/", {
+                method: "POST",
+                body: JSON.stringify(dataCtx.data),
+              });
+
+              if (res.status === 200) {
+                alert("Até aqui tudo bem!");
+              }
+            }}
             bg="pink.500"
             color="white"
             size="lg"

@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, ReactNode } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 interface DataProviderProps {
   children: ReactNode;
@@ -6,22 +6,28 @@ interface DataProviderProps {
 
 interface DataContextType {
   setValues: any;
-  data: any
+  data: any;
 }
 
 export const DataContext = createContext<DataContextType>(
   {} as DataContextType
-)
+);
 
-export function DataProvider ({ children }: DataProviderProps) {
-  const [data, setData] = useState({})
+export function DataProvider({ children }: DataProviderProps) {
+  const [data, setData] = useState({
+    project: "",
+    quanto: "",
+    quemVaiUsarEsseLocal: "",
+    image: [],
+    decorarOpcao: "",
+  });
 
   const setValues = (values) => {
-    setData(prevData => ({
+    setData((prevData) => ({
       ...prevData,
-      ...values
-    }))
-  }
+      ...values,
+    }));
+  };
 
   return (
     <DataContext.Provider value={{ data, setValues }}>
@@ -30,7 +36,7 @@ export function DataProvider ({ children }: DataProviderProps) {
   );
 }
 
-export function useData () {
-  const context = useContext(DataContext)
-  return context
+export function useData() {
+  const context = useContext(DataContext);
+  return context;
 }

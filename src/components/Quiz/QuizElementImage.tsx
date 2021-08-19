@@ -1,28 +1,19 @@
 import { Box, Image, Text } from "@chakra-ui/react";
 import { forwardRef, ForwardRefRenderFunction, useState } from "react";
+import { useData } from "../../hook/useData";
 interface QuizElementImageProps {
   image: string;
   title: string;
-  setValueForm: any;
-  getValuesForm: any;
   valueImg: any;
 }
 
 const ImageBase: ForwardRefRenderFunction<
   HTMLImageElement,
   QuizElementImageProps
-> = (
-  {
-    image,
-    title,
-    setValueForm,
-    getValuesForm,
-    valueImg,
-    ...rest
-  }: QuizElementImageProps,
-  ref
-) => {
+> = ({ image, title, valueImg, ...rest }: QuizElementImageProps, ref) => {
   const [color, setColor] = useState(true);
+
+  const dataCtx = useData();
 
   return (
     <Box
@@ -30,14 +21,20 @@ const ImageBase: ForwardRefRenderFunction<
       type="button"
       onClick={() => {
         setColor(!color);
-        const valores = getValuesForm("image");
+        const valores = dataCtx.data.image;
 
         var index = valores.indexOf(valueImg);
-        if (index === -1) {
-          setValueForm("image", [...valores, valueImg]);
+        const naoAchouOItem = index === -1;
+
+        if (naoAchouOItem) {
+          //Aqui adiciona
+          dataCtx.setValues({ image: [...valores, valueImg] });
         } else {
-          const novoValores = valores.filter((v) => v !== valueImg);
-          setValueForm("image", novoValores);
+          //Aqui remove
+          const getTodosOsValoresMenosOQueEncontrou = valores.filter(
+            (v) => v !== valueImg
+          );
+          dataCtx.setValues({ image: getTodosOsValoresMenosOQueEncontrou });
         }
       }}
     >
